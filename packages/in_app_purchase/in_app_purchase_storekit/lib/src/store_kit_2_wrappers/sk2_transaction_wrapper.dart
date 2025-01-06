@@ -114,9 +114,15 @@ extension on SK2TransactionMessage {
       // in SK2, as per Apple
       // https://developer.apple.com/documentation/foundation/nsbundle/1407276-appstorereceipturl
       // receipt isn’t necessary with SK2 as a Transaction can only be returned
-      // from validated purchases.
+      // from validated purchases, but we still expose it if users want to
+      // validate it themselves or if they need to validate it on the server
+      // side like described in
+      // https://developer.apple.com/documentation/storekit/verificationresult#overview
       verificationData: PurchaseVerificationData(
-          localVerificationData: '', serverVerificationData: '', source: ''),
+        localVerificationData: receiptData ?? '',
+        serverVerificationData: receiptData ?? '',
+        source: kIAPSource,
+      ),
       transactionDate: purchaseDate,
       // Note that with SK2, any transactions that *can* be returned will
       // require to be finished, and are already purchased.
